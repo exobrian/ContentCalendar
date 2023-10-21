@@ -35,6 +35,7 @@ public class ContentCollectionRepository {
     }
 
     public void save(Content content) {
+        contentList.removeIf(c -> c.id() == content.id());
         contentList.add(content);
     }
 
@@ -44,8 +45,8 @@ public class ContentCollectionRepository {
         Generates dummy data content for testing. PostConstruct anno are invoked right after constructing in the dependency injection.
          */
         Content content = new Content(1,
-                "My First Blog Post",
-                "My first blog post",
+                "My First Blog Post Title",
+                "My first blog post description",
                 Status.IDEA,
                 Type.ARTICLE,
                 LocalDateTime.now(),
@@ -53,5 +54,13 @@ public class ContentCollectionRepository {
                 "");
 
         contentList.add(content);
+    }
+
+    public boolean existsById(Integer id) {
+        return contentList.stream().filter(c -> c.id().equals(id)).count() == 1;
+    }
+
+    public void deleteById(Integer id) {
+        contentList.removeIf(c -> c.id().equals(id));
     }
 }
