@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+/*
+* This repository class uses the standard jdbc dependency which we've disabled in favor of
+* sprint-data-jdbc. We'll be using the ContentRepository interface instead which Spring Boot will
+* implement for us.
+* */
+//@Repository
 public class ContentCollectionRepository {
     //Not a database. Used to keep pieces of content in memory so we can work with them in our app.
 

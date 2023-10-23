@@ -1,7 +1,8 @@
 package com.exobrian.contentcalendar.controller;
 
 import com.exobrian.contentcalendar.model.Content;
-import com.exobrian.contentcalendar.repository.ContentCollectionRepository;
+import com.exobrian.contentcalendar.model.Status;
+import com.exobrian.contentcalendar.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/content")
 public class ContentController {
-    private final ContentCollectionRepository repository;
+    private final ContentRepository repository;
 
     @Autowired
-    public ContentController(ContentCollectionRepository repository) {
+    public ContentController(ContentRepository repository) {
         this.repository = repository;
     }
 
@@ -28,6 +29,16 @@ public class ContentController {
     @GetMapping("/{id}")
     public Content findById(@PathVariable Integer id){
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found."));
+    }
+
+    @GetMapping("/filter/keyword/{keyword}")
+    public List<Content> findByKeyword(@PathVariable String keyword){
+        return repository.findAllByTitleContains(keyword);
+    }
+
+    @GetMapping("filter/status/{status}")
+    public List<Content> findByStatus(@PathVariable Status status){
+        return repository.findAllByStatus(status);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
